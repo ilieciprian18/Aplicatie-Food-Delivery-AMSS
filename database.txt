@@ -1,0 +1,71 @@
+create schema FoodDeliveryApp
+
+create table users(
+username VARCHAR(256) unique primary key,
+pass VARCHAR(256) NOT NULL,
+nume varchar(256) NOT NULL,
+prenume varchar(256) NOT NULL,
+email varchar(256) unique NOT NULL,
+telefon VARCHAR(256) NOT NULL,
+userType INT(4) NOT NULL,
+birthDay INT(10) NOT NULL,
+birthMonth INT(10) NOT NULL,
+birthYear INT(10) NOT NULL
+);
+
+alter table users
+ADD gender VARCHAR(256);
+
+create table auditlog(
+operationDate VARCHAR(256),
+operationType VARCHAR(256)
+);
+
+create table restaurant(
+id_restaurant INT(10) NOT NULL primary key,
+restaurant_nume VARCHAR(256) NOT NULL,
+restaurant_rating INT(10) NOT NULL,
+restaurant_oras VARCHAR(256) NOT NULL,
+restaurant_adress VARCHAR(256) NOT NULL
+);
+
+create table reviews(
+id_review INT(10) NOT NULL primary key,
+id_restaurant INT(10) NOT NULL,
+reviews_description VARCHAR(256) NOT NULL,
+reviews_rate INT(10) NOT NULL,
+username_user VARCHAR(256) NOT NULL,
+FOREIGN KEY (id_restaurant) REFERENCES restaurant(id_restaurant),
+FOREIGN KEY (username_user) REFERENCES users(username)
+);
+
+create table meniu(
+id_meniu INT(10) NOT NULL primary key,
+id_restaurant INT(10) NOT NULL,
+nume_produs VARCHAR(256) NOT NULL,
+price_produs float (10) NOT NULL,
+ingrediente_produs VARCHAR(500) NOT NULL,
+FOREIGN KEY (id_restaurant) REFERENCES restaurant(id_restaurant)
+);
+
+create table comanda(
+id_comanda INT(10) NOT NULL auto_increment primary key,
+username_client VARCHAR(256) NOT NULL,
+username_livrator VARCHAR(256) NOT NULL,
+id_restaurant INT(10) NOT NULL,
+orderday INT(10) NOT NULL,
+ordermonth INT(10) NOT NULL,
+orderyear INT(10) NOT NULL,
+adress VARCHAR(256) NOT NULL,
+suma INT(10) NOT NULL,
+FOREIGN KEY (username_client) REFERENCES users(username),
+FOREIGN KEY (username_livrator) REFERENCES users(username),
+FOREIGN KEY (id_restaurant) REFERENCES restaurant(id_restaurant)
+);
+
+create table comanda_are_produs(
+id_comanda INT(10) NOT NULL,
+id_meniu INT(10) NOT NULL,
+FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),
+FOREIGN KEY (id_meniu) REFERENCES meniu(id_meniu)
+);
