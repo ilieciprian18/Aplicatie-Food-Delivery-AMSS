@@ -43,6 +43,8 @@ public class LoginController {
             Preferences userPreferences = Preferences.userRoot();
             userPreferences.put("username", tempUser);
 
+            //initialize aici date applicatie
+
             if( SQL.findUserType(tempUser) == 0)
             {
                 System.out.println("Logged as User");

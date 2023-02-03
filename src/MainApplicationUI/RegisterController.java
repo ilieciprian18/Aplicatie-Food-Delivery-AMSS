@@ -210,8 +210,6 @@ public class RegisterController {
             dateOfBirth.valueProperty().set(null);
 
         }
-
-
     }
 
 
