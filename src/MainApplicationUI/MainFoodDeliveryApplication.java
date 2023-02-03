@@ -19,10 +19,10 @@ private static Stage stg;
         stg = primaryStage;
         primaryStage.setResizable(false);
 
-        Parent root = FXMLLoader.load(getClass().getResource("../MainApplicationUI/sample.fxml"));
-        primaryStage.setScene(new Scene(root, 825, 545));
+        Parent root = FXMLLoader.load(getClass().getResource("../MainApplicationUI/login.fxml"));
+        primaryStage.setScene(new Scene(root, 850, 725));
         primaryStage.setTitle("Food Delivery Application");
-       // primaryStage.getIcons().add(new Image("ApplicationUI/Images/icon.png"));
+        primaryStage.getIcons().add(new Image("MainApplicationUI/Images/icon.png"));
         primaryStage.show();
 
     }
