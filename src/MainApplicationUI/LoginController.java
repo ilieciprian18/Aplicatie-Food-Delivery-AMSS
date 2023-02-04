@@ -48,6 +48,7 @@ public class LoginController {
             if( SQL.findUserType(tempUser) == 0)
             {
                 System.out.println("Logged as User");
+                m.changeScene("userSelectCity.fxml");
             }
             else {
                 if( SQL.findUserType(tempUser) == 1)
