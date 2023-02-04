@@ -27,7 +27,7 @@ public class UserSelectCityController {
         userPreferences.put("oras","Bucuresti");
 
         MainFoodDeliveryApplication m = new MainFoodDeliveryApplication();
-        // m.changeScene("meniuBucharest.fxml");
+        m.changeScene("userHome.fxml");
 
     }
 }

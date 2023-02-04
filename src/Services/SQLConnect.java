@@ -1,9 +1,12 @@
 package Services;
 
+import Classes.Restaurant;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Vector;
 
 public class SQLConnect {
     private final String MySQLname = "jdbc:mysql://localhost:3306/fooddeliveryapp";
@@ -122,4 +125,50 @@ public class SQLConnect {
         }
 
     }
+
+    public Vector<Vector<String>> getRestauransCity(String oras){
+
+        Vector<Vector<String>> respond = new Vector<>();
+        String query = "select * from restaurant where restaurant_oras = " + "'" + oras + "'";
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+            while(respondData.next())
+            {
+                Vector<String> lineRespond = new Vector<>();
+                String restaurantName = respondData.getString("restaurant_nume");
+                String restaurantRating = respondData.getString("restaurant_rating");
+                String restaurantAdress = respondData.getString("restaurant_adress");
+                String restaurantID = respondData.getString("id_restaurant");
+                //String restaurantCity = respondData.getString("restaurant_oras");
+                lineRespond.add(restaurantName);
+                lineRespond.add(restaurantRating);
+                lineRespond.add(restaurantAdress);
+                lineRespond.add(restaurantID);
+
+                respond.add(lineRespond);
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+        return respond;
+    }
+
+
+    public String getRestaurantCity(int id){
+
+
+        String restaurantCity = "";
+
+        return restaurantCity;
+
+
+
+    }
+
+
+
 }

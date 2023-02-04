@@ -8,7 +8,10 @@ public class RestaurantService {
 
     public Vector<Restaurant> restaurante;
 
-    public RestaurantService(Vector<Restaurant> restaurante) {
-        this.restaurante = restaurante;
+    public RestaurantService() {
+        this.restaurante = new Vector<>();
     }
+
+
+
 }

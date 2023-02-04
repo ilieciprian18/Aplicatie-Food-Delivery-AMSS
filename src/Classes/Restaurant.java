@@ -10,4 +10,7 @@ public class Restaurant {
     protected String orasRestaurant;
     protected String adressRestaurant;
     protected Vector<Produs> meniu = new Vector<Produs>();
+
+
+
 }
