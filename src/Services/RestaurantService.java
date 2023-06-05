@@ -12,6 +12,7 @@ public class RestaurantService {
         this.restaurante = new Vector<>();
     }
 
-
-
+    public void setRestaurante(Vector<Restaurant> restaurante) {
+        this.restaurante = restaurante;
+    }
 }

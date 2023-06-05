@@ -1,6 +1,7 @@
 package MainApplicationUI;
 
 import Classes.Produs;
+import Services.ComandaService;
 import Services.RestaurantService;
 import Services.UserService;
 
@@ -12,6 +13,7 @@ public class ApplicationDataSingletone {
 
     private RestaurantService restaurante;
     private UserService useriAplicatie;
+    private ComandaService comenziAplicatie;
 
     private Vector<Produs> comandaCheckout;
 

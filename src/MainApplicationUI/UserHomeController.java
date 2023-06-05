@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import javax.swing.text.Style;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Vector;
 import java.util.prefs.Preferences;
@@ -101,13 +102,7 @@ public class UserHomeController {
 
             Label tempRating = new Label();
             float ratingValue = Float.valueOf(tempRestaurants.elementAt(i).elementAt(1));
-            if( ratingValue - (int)ratingValue !=0)
-            {
                 tempRating.setText(tempRestaurants.elementAt(i).elementAt(1));
-            }
-            else {
-                tempRating.setText(tempRestaurants.elementAt(i).elementAt(1) + ".0");
-            }
             //tempRating.setText(tempRestaurants.elementAt(i).elementAt(1));
             tempRating.setFont(new Font("System", 23));
             tempRating.setLayoutX(763);
@@ -132,7 +127,7 @@ public class UserHomeController {
 
     }
 
-    public void toRestaurant(ActionEvent event){
+    public void toRestaurant(ActionEvent event) {
 
         int itemButtonId = Integer.parseInt(((Button)event.getSource()).getId());
         String itemButtonIdString = Integer.toString(itemButtonId);
@@ -141,8 +136,23 @@ public class UserHomeController {
 
         System.out.println(itemButtonIdString);
         MainFoodDeliveryApplication m = new MainFoodDeliveryApplication();
-        //m.changeScene("");
+        try {
+            m.changeScene("userRestaurantOrder.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
+    public void goToHistory(ActionEvent event) throws IOException {
+        MainFoodDeliveryApplication m = new MainFoodDeliveryApplication();
+        m.changeScene("userOrderHistory.fxml");
+    }
+
+
+
+
+
+
 
 }

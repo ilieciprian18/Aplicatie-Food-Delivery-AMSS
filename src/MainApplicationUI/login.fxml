@@ -44,11 +44,11 @@
                         <Font size="18.0" />
                     </font>
                 </Button>
-                <Button alignment="TOP_LEFT" layoutX="106.0" layoutY="441.0" mnemonicParsing="false" onAction="#goToRegister" prefHeight="25.0" prefWidth="249.0" style="-fx-background-color: transparent;" text="No account? SignUp Instead">
+                <Button alignment="TOP_LEFT" layoutX="94.0" layoutY="448.0" mnemonicParsing="false" onAction="#goToRegister" prefHeight="25.0" prefWidth="249.0" style="-fx-background-color: transparent;" text="No account? SignUp Instead">
                <font>
                   <Font size="14.0" />
                </font></Button>
-                <Button layoutX="107.0" layoutY="471.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Forgot Password?">
+                <Button layoutX="95.0" layoutY="478.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Forgot Password?">
                <font>
                   <Font size="14.0" />
                </font></Button>
@@ -60,7 +60,7 @@
             <children>
                 <ImageView fitHeight="725.0" fitWidth="425.0" pickOnBounds="true">
                     <image>
-                        <Image url="@Images/food.jpg" />
+                        <Image url="@Images/login.png" />
                     </image>
                 </ImageView>
             </children>

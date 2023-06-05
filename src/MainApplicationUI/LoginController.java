@@ -36,7 +36,7 @@ public class LoginController {
         MainFoodDeliveryApplication m = new MainFoodDeliveryApplication();
 
         String tempUser = username.getText();
-        if(SQL.Login(username.getText(), password.getText()))
+        if(SQL.Login(username.getText(), password.getText()) && tempUser.equals("temporary") == false)
         {
             System.out.println(SQL.findUserType(tempUser));
 
