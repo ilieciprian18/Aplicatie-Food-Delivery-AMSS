@@ -1,8 +1,8 @@
 # Aplicatie-Food-Delivery-AMSS
 
-#Diagrama Overview
+# Diagrama Overview
 
-##State Diagram
+## State Diagram
 
 
 
