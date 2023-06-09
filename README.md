@@ -3,6 +3,7 @@
 # Diagrama Overview
 
 ## State Diagram
+![image](https://github.com/ilieciprian18/Aplicatie-Food-Delivery-AMSS/assets/61537857/cba2372f-ceed-456d-bbd3-eba7d41884a9)
 
 
 
