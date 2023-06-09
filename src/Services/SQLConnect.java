@@ -284,10 +284,14 @@ public class SQLConnect {
                 String tempNumeProdus = respondDataOrders.getString("nume_produs");
                 String tempPriceProdus = respondDataOrders.getString("price_produs");
                 String tempIngredienteProdus = respondDataOrders.getString("ingrediente_produs");
+                int tempIdProdus = Integer.parseInt(respondDataOrders.getString("id_meniu"));
+
 
                 tempProdus.setNumeProdus(tempNumeProdus);
                 tempProdus.setPretProdus(Float.parseFloat(tempPriceProdus));
                 tempProdus.setIngredienteProdus(tempIngredienteProdus);
+                tempProdus.setIdProdsX(tempIdProdus);
+
 
                 meniu.add(tempProdus);
 
@@ -375,11 +379,70 @@ public class SQLConnect {
             System.out.println("Eroare in executarea comenzii SQL");
         }
 
-        return futureOrderId;
+        return futureOrderId+1;
     }
 
-    public void insertOrderDatabase(int idComanda, String username, String usernameLivrator, int idRestaurant, int orderDay, int orderMonth, int orderYear, String adress, int suma){
+    public void insertOrderDatabase(int idComanda, String username, int idRestaurant, int orderDay, int orderMonth, int orderYear, String adress, float suma){
 
+
+        String query = "insert into comanda ( id_comanda, username_client, username_livrator, id_restaurant, orderday, ordermonth, orderyear, adress, suma, rated, status_order)" +
+                            " values " + "(" + idComanda + "," + "'" + username + "'" + "," + "'unassigned'" + "," + idRestaurant + "," + orderDay + "," + orderMonth + "," + orderYear +
+                "," + "'" + adress + "'" + "," + suma + "," + "'n'" + "," + "'Placed'" + ")";
+
+        //System.out.println(query);
+
+        try{
+            Statement st = conector.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+    }
+
+    public void insertOrderProduct(int idComanda, int idMeniu)
+    {
+        String query = "insert into comanda_are_produs (id_comanda,id_meniu) values " + "(" + idComanda + "," + idMeniu + ")";
+
+        try{
+            Statement st = conector.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+    }
+
+    public Restaurant loadRestaurantInfo(int id){
+
+        String query = "select * from restaurant where id_restaurant =  " + id;
+        System.out.println(query);
+        Restaurant tempRestaurant = new Restaurant();
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next()) {
+                String restaurantName = respondData.getString("restaurant_nume");
+                String restaurantOras = respondData.getString("restaurant_oras");
+                String restaurantAdress = respondData.getString("restaurant_adress");
+                float restaurantRating = Float.parseFloat(respondData.getString("restaurant_rating"));
+
+
+                tempRestaurant.setNumeRestaurant(restaurantName);
+                tempRestaurant.setOrasRestaurant(restaurantOras);
+                tempRestaurant.setAdressRestaurant(restaurantAdress);
+                tempRestaurant.setRatingRestaurant(restaurantRating);
+            }
+
+        }
+        catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+
+        return tempRestaurant;
 
     }
 
@@ -415,6 +478,342 @@ public class SQLConnect {
         return isFirst;
 
     }
+
+    public int numberOrderClient(String username)
+    {
+        int numberOrders = 0;
+
+        String query = " select count(*) from comanda where username_client = " + "'" + username + "'";
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next())
+            {
+                int tempNumberOrders = Integer.parseInt(respondData.getString("count(*)"));
+                numberOrders = tempNumberOrders;
+            }
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+
+        return numberOrders;
+
+    }
+
+    public Comanda getDetailsOrder(int id)
+    {
+        String query = "select * from comanda where id_comanda = " + id;
+
+        Comanda tempComanda = new Comanda();
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next())
+            {
+                String tempUsernameClient = respondData.getString("username_client");
+                String tempUsernameLivrator = respondData.getString("username_livrator");
+                int tempIdRestaurant = Integer.parseInt(respondData.getString("id_restaurant"));
+                int tempOrderDay = Integer.parseInt(respondData.getString("orderday"));
+                int tempOrderMonth = Integer.parseInt(respondData.getString("ordermonth"));
+                int tempOrderYear = Integer.parseInt(respondData.getString("orderyear"));
+                String tempAdress = respondData.getString("adress");
+                float tempSum = Float.parseFloat(respondData.getString("suma"));
+                String tempRated = respondData.getString("rated");
+                String tempStatusOrder = respondData.getString("status_order");
+
+                tempComanda.setUsernameUser(tempUsernameClient);
+                tempComanda.setUsernameLivrator(tempUsernameLivrator);
+                tempComanda.setIdRestaurant(tempIdRestaurant);
+                tempComanda.setOrderDay(tempOrderDay);
+                tempComanda.setOrderMonth(tempOrderMonth);
+                tempComanda.setOrderYear(tempOrderYear);
+                tempComanda.setAdress(tempAdress);
+                tempComanda.setSuma(tempSum);
+                tempComanda.setIsOrderRated(tempRated);
+                tempComanda.setOrderStatus(tempStatusOrder);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+
+        return tempComanda;
+    }
+
+    public Vector<Comanda> getOrderUser(String username)
+    {
+        String query = "select * from comanda where username_client = " + "'" + username + "'";
+        System.out.println(query);
+
+        Vector<Comanda> comenziUser = new Vector<>();
+
+
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next())
+            {
+
+                Comanda tempComanda = new Comanda();
+
+
+
+                String tempUsernameClient = respondData.getString("username_client");
+                String tempUsernameLivrator = respondData.getString("username_livrator");
+                int tempIdRestaurant = Integer.parseInt(respondData.getString("id_restaurant"));
+                int tempOrderDay = Integer.parseInt(respondData.getString("orderday"));
+                int tempOrderMonth = Integer.parseInt(respondData.getString("ordermonth"));
+                int tempOrderYear = Integer.parseInt(respondData.getString("orderyear"));
+
+
+                String tempAdress = respondData.getString("adress");
+                float tempSum = Float.parseFloat(respondData.getString("suma"));
+                String tempRated = respondData.getString("rated");
+                String tempStatusOrder = respondData.getString("status_order");
+
+                int tempOrderId = Integer.parseInt(respondData.getString("id_comanda"));
+
+                tempComanda.setUsernameUser(tempUsernameClient);
+                tempComanda.setUsernameLivrator(tempUsernameLivrator);
+                tempComanda.setIdRestaurant(tempIdRestaurant);
+                tempComanda.setOrderDay(tempOrderDay);
+                tempComanda.setOrderMonth(tempOrderMonth);
+                tempComanda.setOrderYear(tempOrderYear);
+                tempComanda.setAdress(tempAdress);
+                tempComanda.setSuma(tempSum);
+                tempComanda.setIsOrderRated(tempRated);
+                tempComanda.setOrderStatus(tempStatusOrder);
+                tempComanda.setIdComanda(tempOrderId);
+
+
+                comenziUser.add(tempComanda);
+
+
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+
+        return comenziUser;
+
+
+    }
+
+    public Vector<Produs> getItemsOrder(int orderID){
+
+            Vector<Produs> itemsOrder = new Vector<>();
+
+            String query = "select meniu.id_restaurant,comanda_are_produs.id_meniu, meniu.nume_produs, meniu.price_produs " +
+                    "from meniu,comanda_are_produs " +
+                    "where comanda_are_produs.id_comanda = "+ orderID + " and comanda_are_produs.id_meniu = meniu.id_meniu";
+
+            try{
+                Statement st = conector.createStatement();
+                ResultSet respondData = st.executeQuery(query);
+
+                while(respondData.next())
+                {
+
+                    Produs tempProdus = new Produs();
+
+                    String tempNameProdus = respondData.getString("nume_produs");
+                    Float tempPriceProdus = Float.valueOf(respondData.getString("price_produs"));
+                    int tempIdProdus = Integer.parseInt(respondData.getString("id_meniu"));
+
+                    tempProdus.setNumeProdus(tempNameProdus);
+                    tempProdus.setPretProdus(tempPriceProdus);
+                    tempProdus.setIdProdsX(tempIdProdus);
+
+
+                    itemsOrder.add(tempProdus);
+
+
+
+
+                }
+            } catch (SQLException e) {
+                System.out.println("Eroare in executarea comenzii SQL");
+            }
+
+
+
+
+            return itemsOrder;
+
+    }
+
+
+    public Produs getDetailsProdus(int idProdus)
+    {
+        Produs tempProdus = new Produs();
+
+        String query = "select * from meniu " +
+                "where id_meniu = " + idProdus;
+
+        System.out.println(query);
+
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next())
+                {
+
+
+                    String tempNumeProdus = respondData.getString("nume_produs");
+                    Float tempPriceProdus = Float.valueOf(respondData.getString("price_produs"));
+
+                    tempProdus.setNumeProdus(tempNumeProdus);
+                    tempProdus.setPretProdus(tempPriceProdus);
+
+
+
+                }
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+        return tempProdus;
+    }
+
+    public void insertReviewDatabase(int idRestaurant, int reviewRating, String username, String reviewDescription){
+
+        String query = "insert into reviews ( id_restaurant, reviews_rate, username_user, reviews_description) " +
+                "values" + "(" + idRestaurant + "," + reviewRating + "," + "'" + username + "'" + "," + "'" + reviewDescription + "'" + ")";
+
+        try{
+            Statement st = conector.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+
+
+    }
+
+    public int getNumberReviews (int idRestaurant){
+
+
+        int nr = 0;
+
+        String query = "select count(*) from reviews " +
+                "where id_restaurant = " + idRestaurant;
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next())
+            {
+                int numberReviewsCount = Integer.parseInt(respondData.getString("count(*)"));
+                nr = numberReviewsCount;
+            }
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+        return  nr;
+
+    }
+
+    public void updateReviewRestaurant(int newReviewValue, Float oldReviewValue, int numberReviews, int idRestaurant){
+
+
+        Float ratingNew = (oldReviewValue * numberReviews + newReviewValue) / (numberReviews + 1 );
+
+        String query = "update restaurant " +
+                "set restaurant_rating = " + ratingNew + " " +
+                "where id_restaurant = " + idRestaurant;
+
+        try{
+            Statement st = conector.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+    }
+
+    public void updateOrderRated(int orderId){
+
+
+        String query = "update comanda " +
+                "set rated = 'y' " +
+                "where id_comanda = " + orderId;
+
+        try{
+            Statement st = conector.createStatement();
+            st.execute(query);
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+
+    }
+
+    public User getDetailsUser(String username){
+
+        User tempUser = new User();
+
+        String query = "select * from users " +
+                "where username = " + "'" + username + "'";
+
+        try{
+            Statement st = conector.createStatement();
+            ResultSet respondData = st.executeQuery(query);
+
+            while(respondData.next())
+            {
+                String nameUser = respondData.getString("nume");
+                String prenumeUser = respondData.getString("prenume");
+                String emailUser = respondData.getString("email");
+                String telefonUser = respondData.getString("telefon");
+                int birthDay = Integer.parseInt(respondData.getString("birthDay"));
+                int birthMonth = Integer.parseInt(respondData.getString("birthMonth"));
+                int birthYear = Integer.parseInt(respondData.getString("birthYear"));
+                String gender = respondData.getString("gender");
+
+                tempUser.setNume(nameUser);
+                tempUser.setPrenume(prenumeUser);
+                tempUser.setEmail(emailUser);
+                tempUser.setTelefon(telefonUser);
+                tempUser.setGender(gender);
+                tempUser.setBirthDay(birthDay);
+                tempUser.setBirthMonth(birthMonth);
+                tempUser.setBirthYear(birthYear);
+
+
+
+            }
+
+
+
+
+        } catch (SQLException e) {
+            System.out.println("Eroare in executarea comenzii SQL");
+        }
+
+        return tempUser;
+
+    }
+
+
 
 
     public Vector<Comanda> loadOrders(){

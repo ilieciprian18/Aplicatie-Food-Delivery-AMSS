@@ -7,6 +7,17 @@ public class Produs {
     protected float pretProdus;
     private  int idProdsX;
 
+    public Produs() {
+    }
+
+    public void setIdProdsX(int idProdsX) {
+        this.idProdsX = idProdsX;
+    }
+
+    public int getIdProdsX() {
+        return idProdsX;
+    }
+
     public void setNumeProdus(String numeProdus) {
         this.numeProdus = numeProdus;
     }

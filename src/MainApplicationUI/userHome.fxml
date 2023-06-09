@@ -27,7 +27,7 @@
                 </Pane>
                 <Pane layoutX="567.0" layoutY="111.0" prefHeight="106.0" prefWidth="283.0" style="-fx-background-color: #000000;">
                     <children>
-                        <Button alignment="BOTTOM_CENTER" layoutX="-1.0" mnemonicParsing="false" prefHeight="108.0" prefWidth="283.0" stylesheets="@Images/menu.css" text="PROFILE" textFill="WHITE">
+                        <Button alignment="BOTTOM_CENTER" layoutX="-1.0" mnemonicParsing="false" onAction="#goToProfile" prefHeight="108.0" prefWidth="283.0" stylesheets="@Images/menu.css" text="PROFILE" textFill="WHITE">
                             <font>
                                 <Font size="25.0" />
                             </font>

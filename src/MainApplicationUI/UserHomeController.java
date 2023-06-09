@@ -149,6 +149,11 @@ public class UserHomeController {
         m.changeScene("userOrderHistory.fxml");
     }
 
+    public  void goToProfile(ActionEvent event) throws IOException {
+        MainFoodDeliveryApplication m = new MainFoodDeliveryApplication();
+        m.changeScene("profile.fxml");
+    }
+
 
 
 

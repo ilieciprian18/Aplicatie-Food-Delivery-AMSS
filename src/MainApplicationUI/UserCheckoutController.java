@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 
@@ -393,7 +394,7 @@ public class UserCheckoutController {
         String allertMessage = "";
         boolean checkPayment = false;
         boolean checkAdress = false;
-        boolean checkMinimumOrder = false;
+        boolean checkMinimumOrder = true;
         boolean negativeNotification = false;
         SQLConnect SQL = new SQLConnect();
         if (cardChecked.isSelected() && cashChecked.isSelected())
@@ -431,6 +432,7 @@ public class UserCheckoutController {
             {
                 negativeNotification = true;
                 allertMessage =  allertMessage + "Minimum order is of 30 ron ( before vouchers ) \n";
+                checkMinimumOrder = false;
 
             }
 
@@ -441,6 +443,7 @@ public class UserCheckoutController {
             {
                 negativeNotification = true;
                 allertMessage =  allertMessage + "Minimum order is of 30 ron ( before vouchers ) \n";
+                checkMinimumOrder = false;
 
 
             }
@@ -454,20 +457,47 @@ public class UserCheckoutController {
             String nameRestaurant = selectedRestaurant.getNumeRestaurant();
             int idComada = SQL.getOrderCurrent();
 
+            String tempAdress = adressTextBox.getText();
+
+            Calendar calendar = Calendar.getInstance();
+            int tempDay = calendar.get(Calendar.DAY_OF_MONTH);
+            int tempMonth = calendar.get(Calendar.MONTH);
+            int tempYear = calendar.get(Calendar.YEAR);
+
             int insertOrderId = SQL.getInsertOrder();
 
+            Preferences userPreferences = Preferences.userRoot();
+            String tempUsername = userPreferences.get("username","none");
+
             //insert into comanda
+            System.out.println("insert database");
+            SQL.insertOrderDatabase(insertOrderId,tempUsername, selectedRestaurant.getIdRestaurant(),tempDay,tempMonth,tempYear,tempAdress,this.sumOrder);
 
 
 
             //insert in ...
+            for(int i = 0; i< globalMenuSelected.size(); i++)
+            {
+                for( int tempX = 0; tempX < itemsNumber[i]; tempX++)
+                {
+                    System.out.println(globalMenuSelected.elementAt(i).getNumeProdus()  + globalMenuSelected.elementAt(i).getIdProdsX());
+                    SQL.insertOrderProduct(insertOrderId, globalMenuSelected.elementAt(i).getIdProdsX());
+                }
+            }
 
+
+            if(voucherActivated == true)
+            {
+
+            }
 
 
 
 
 
         }
+
+
 
 
 

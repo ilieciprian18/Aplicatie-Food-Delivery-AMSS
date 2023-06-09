@@ -46,6 +46,8 @@ public class RegisterController {
     @FXML
     private Label wrongDate;
 
+    private String errorMessageRegister;
+
     public void RegisterController(){
 
     }
@@ -74,6 +76,8 @@ public class RegisterController {
         boolean okSelect = false;
         boolean okDate = false;
 
+        String allertMessage = "";
+
         String tempUsername = username.getText();
 
         if (tempUsername.length() >= 1 && tempUsername.contains(" ") == false && SQL.searchUsername(tempUsername) == true) {
@@ -82,18 +86,22 @@ public class RegisterController {
             okusername = true;
         } else {
             if (tempUsername.length() < 1) {
-                wrongUsername.setText("Required*");
-                wrongUsername.setVisible(true);
+                //wrongUsername.setText("Required*");
+                //wrongUsername.setVisible(true);
+                allertMessage = allertMessage + "Please enter a username (required)\n";
             }
 
             if (tempUsername.contains(" ") == true) {
-                wrongUsername.setText("No spaced allowed");
-                wrongUsername.setVisible(true);
+                //wrongUsername.setText("No spaced allowed");
+               // wrongUsername.setVisible(true);
+                allertMessage = allertMessage + "No spaces allowed in username \n";
             }
 
             if (SQL.searchUsername(tempUsername) == false) {
-                wrongUsername.setText("Username already taken!");
-                wrongUsername.setVisible(true);
+                //wrongUsername.setText("Username already taken!");
+                //wrongUsername.setVisible(true);
+                allertMessage = allertMessage + "This username is already taken \n";
+
             }
 
         }
@@ -102,30 +110,34 @@ public class RegisterController {
         okPassword = checkPassword(tempPassword);
         //System.out.println(okPassword);
         if (okPassword == false) {
-            wrongPassword.setVisible(true);
+            //wrongPassword.setVisible(true);
+            allertMessage = allertMessage + errorMessageRegister ;
+
         } else {
-            wrongPassword.setVisible(false);
+            //wrongPassword.setVisible(false);
 
         }
 
         String tempName = name.getText();
         if (tempName.length() >= 1) {
             okName = true;
-            wrongName.setVisible(false);
+            //wrongName.setVisible(false);
         }
 
         if (okName == false) {
-            wrongName.setVisible(true);
+            //wrongName.setVisible(true);
+            allertMessage = allertMessage + "Please enter a name (required)\n";
         }
 
         String tempPrenume = prenume.getText();
         if (tempPrenume.length() >= 1) {
             okPrenume = true;
-            wrongPrenume.setVisible(false);
+            //wrongPrenume.setVisible(false);
         }
 
         if (okPrenume == false) {
-            wrongPrenume.setVisible(true);
+            //wrongPrenume.setVisible(true);
+            allertMessage = allertMessage + "Please enter a prenume (required)\n";
         }
 
         String tempEmail = email.getText();
@@ -133,28 +145,30 @@ public class RegisterController {
         Matcher matcher = pattern.matcher(tempEmail);
         System.out.println(matcher.matches());
         if (matcher.matches() == true) {
-            wrongEmail.setVisible(false);
+            //wrongEmail.setVisible(false);
             okEmail = true;
 
         }
 
         if (okEmail == false) {
-            wrongEmail.setVisible(true);
-            wrongEmail.setText("email not valid");
+            //wrongEmail.setVisible(true);
+           // wrongEmail.setText("email not valid");
+            allertMessage = allertMessage + "Please enter a valid email (required)\n";
         }
 
         String tempPhoneNumber = phoneNumber.getText();
         pattern = Pattern.compile("^\\d{10}$");
         matcher = pattern.matcher(tempPhoneNumber);
         if (matcher.matches() == true) {
-            wrongPhoneNumber.setVisible(false);
+           // wrongPhoneNumber.setVisible(false);
             okPhoneNumber = true;
 
         }
 
         if (okPhoneNumber == false) {
-            wrongPhoneNumber.setVisible(true);
-            wrongPhoneNumber.setText("not valid");
+            //wrongPhoneNumber.setVisible(true);
+            //wrongPhoneNumber.setText("not valid");
+            allertMessage = allertMessage + "Please enter a valid phone number (required)\n";
         }
 
         String x = "";
@@ -167,11 +181,12 @@ public class RegisterController {
                 x = "male";
             }
             okSelect = true;
-            wrongSelected.setVisible(false);
+           // wrongSelected.setVisible(false);
         }
 
         if (okSelect == false) {
-            wrongSelected.setVisible(true);
+            //wrongSelected.setVisible(true);
+            allertMessage = allertMessage + "Please enter a gender (required)\n";
         }
 
         int tempDay = 0;
@@ -190,7 +205,8 @@ public class RegisterController {
 
         if(okDate == false)
         {
-            wrongDate.setVisible(true);
+            //wrongDate.setVisible(true);
+            allertMessage = allertMessage + "Please enter a birth date (required)\n";
         }
 
         if( okusername && okName && okPrenume && okPassword && okEmail && okPhoneNumber && okSelect && okDate)
@@ -210,31 +226,41 @@ public class RegisterController {
             dateOfBirth.valueProperty().set(null);
 
         }
+
+        else {
+
+            Alert allertInfo = new Alert(Alert.AlertType.INFORMATION);
+            allertInfo.setTitle("Register notification!");
+            allertInfo.setHeaderText(allertMessage);
+            allertInfo.show();
+        }
     }
 
 
     private boolean checkPassword(String password){
 
         boolean isValid = true;
-        String error = "Minim: ";
+        String error = "Minim password requirements not met: \n";
         if(password.length() < 8)
         {
             isValid = false;
-            error = error + "8 caractere";
+            error = error + "8 caractere (!) \n";
         }
 
         String uppercase = "(.*[A-Z].*)";
         if(!password.matches(uppercase)){
             isValid = false;
-            error = error + " o litera mare";
+            error = error + " o litera mare (!) \n";
         }
 
         String numbers = "(.*[1-9].*)";
         if(!password.matches(numbers))
         {
             isValid = false;
-            error = error + " o cifra";
+            error = error + " o cifra (!) \n";
         }
+
+        this.errorMessageRegister = error;
 
         System.out.println();
         wrongPassword.setText(error);

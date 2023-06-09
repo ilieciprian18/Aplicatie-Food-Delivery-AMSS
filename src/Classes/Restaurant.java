@@ -12,6 +12,9 @@ public class Restaurant {
     protected Vector<Produs> meniu = new Vector<Produs>();
 
 
+    public Restaurant() {
+    }
+
     public int getIdRestaurant() {
         return idRestaurant;
     }
