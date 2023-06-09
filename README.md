@@ -22,5 +22,6 @@
 
 
 # Activity Diagram
-![image](https://github.com/ilieciprian18/Aplicatie-Food-Delivery-AMSS/assets/61537857/e5f01e1b-93ed-4211-a07f-49bf868af7f7)
+![image](https://github.com/ilieciprian18/Aplicatie-Food-Delivery-AMSS/assets/61537857/f1cc2017-d500-4f42-83a8-493d4a534cbc)
+
 
